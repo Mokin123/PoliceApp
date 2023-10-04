@@ -1,10 +1,15 @@
 package model;
-
-public class user{
-	private char username;
-	private char password;
+public class User{
 	
-	public void printstuff(String test) {
-		System.out.println(test);
+	private String username;
+	private String password;
+	private boolean admin;
+	
+	public boolean checkUser(String tUsername, String tPassword) {
+		boolean state = false;
+		if(username == tUsername && password == tPassword) {
+			state = true;
+		}
+		return state;
 	}
 }
