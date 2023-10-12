@@ -13,13 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import model.User;
-import model.user;
 
 public class Login {
 //	Importing class user as "u"
 	User u = new User();
 	Home home = new Home();
-	private JFrame frame;
+	public JFrame frame;
 	private JTextField unText;
 	private JTextField pwText;
 

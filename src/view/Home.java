@@ -7,9 +7,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import view.Login;
 
 public class Home {
-	Login login = new Login();
+	private Login login;
+	private JFrame frame;
+
 
 	/**
 	 * Launch the application.
@@ -27,7 +30,8 @@ public class Home {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() {
-		JFrame frame = new JFrame();
+		login = new Login();
+		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setBounds(100, 100, 284, 573);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,7 +43,8 @@ public class Home {
 		frame.setVisible(true);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				login.initialize();
+				frame.setVisible(false);
+				login.frame.setVisible(true);
 			}
 			});
 
