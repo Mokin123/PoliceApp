@@ -18,6 +18,7 @@ public class Login {
 //	Importing class user as "u"
 	User u = new User();
 	Home home = new Home();
+	Report ar = new Report();
 	public JFrame frame;
 	private JTextField unText;
 	private JTextField pwText;
@@ -84,7 +85,7 @@ public class Login {
 				System.out.println(un);
 				System.out.println(pw);
 //				System.out.println(u.checkUser(un,pw));
-				home.initialize();
+				ar.initialize();
 			}
 		});
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
