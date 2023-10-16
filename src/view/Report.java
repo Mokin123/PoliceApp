@@ -7,19 +7,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import view.Login;
 import javax.swing.JLabel;
 import model.AccidentReport;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Report {
 	private AccidentReport ar;
 	private JFrame frame;
+	private Login login;
 	private JTextField dateTx;
 	private JTextField timeTx;
 	private JTextField locTx;
+	private ButtonGroup severityGroup;
+
 
 
 	/**
@@ -29,15 +35,8 @@ public class Report {
 		initialize();
 	}
 
-	/**
-	 * Create the application.
-	 */
-	
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	public void initialize() {
+		login = new Login();
 		ar = new AccidentReport();
 		frame = new JFrame();
 		frame.setVisible(true);
@@ -101,13 +100,59 @@ public class Report {
 		locTx.setColumns(10);
 		locTx.setText("Location...");
 		
-		JRadioButton fatalRadio = new JRadioButton();
-		fatalRadio.setBounds(68, 165, 28, 23);
-		frame.getContentPane().add(fatalRadio);
+//		RADIO buttons
+		severityGroup = new ButtonGroup();
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(43, 223, 61, 16);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel severityLb = new JLabel("Severity :");
+		severityLb.setBounds(10, 172, 61, 16);
+		frame.getContentPane().add(severityLb);
+		
+		JRadioButton fatalRadio = new JRadioButton();
+		fatalRadio.setBounds(68, 170, 28, 23);
+		frame.getContentPane().add(fatalRadio);
+		severityGroup.add(fatalRadio);
+		
+		JRadioButton severeRadio = new JRadioButton();
+		severeRadio.setBounds(118, 170, 28, 23);
+		frame.getContentPane().add(severeRadio);
+		severityGroup.add(severeRadio);
+		
+		JRadioButton moderateRadio = new JRadioButton();
+		moderateRadio.setBounds(168, 170, 28, 23);
+		frame.getContentPane().add(moderateRadio);
+		severityGroup.add(moderateRadio);
+		
+		JRadioButton lightRadio = new JRadioButton();
+		lightRadio.setBounds(218, 170, 28, 23);
+		frame.getContentPane().add(lightRadio);
+		severityGroup.add(lightRadio);
+		
+		JLabel fatalLb = new JLabel("fatal");
+		fatalLb.setBounds(70, 193, 28, 16);
+		frame.getContentPane().add(fatalLb);
+		fatalLb.setFont(new Font(fatalLb.getName(), Font.PLAIN, 10));
+
+		JLabel severeLb = new JLabel("severe");
+		severeLb.setBounds(117, 193, 37, 16);
+		frame.getContentPane().add(severeLb);
+		severeLb.setFont(new Font(severeLb.getName(), Font.PLAIN, 10));
+
+		JLabel moderateLb = new JLabel("moderate");
+		moderateLb.setBounds(159, 193, 52, 16);
+		frame.getContentPane().add(moderateLb);
+		moderateLb.setFont(new Font(moderateLb.getName(), Font.PLAIN, 10));
+
+		JLabel lightLb = new JLabel("light");
+		lightLb.setBounds(222, 193, 28, 16);
+		frame.getContentPane().add(lightLb);
+		lightLb.setFont(new Font(lightLb.getName(), Font.PLAIN, 10));
+		
+		
+//		Parties involved
+		JLabel typeLb = new JLabel("New label");
+		typeLb.setBounds(6, 216, 61, 16);
+		frame.getContentPane().add(typeLb);
+
 		
 		
 	}

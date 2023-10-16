@@ -43,8 +43,8 @@ public class Home {
 		frame.setVisible(true);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setVisible(false);
-				login.frame.setVisible(true);
+//				frame.setVisible(false);
+//				login.frame.setVisible(true);
 			}
 			});
 
