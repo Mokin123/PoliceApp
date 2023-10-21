@@ -1,9 +1,8 @@
 package model;
 
 import java.util.LinkedList;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+
 
 
 public class UserManager {
@@ -30,6 +29,8 @@ public class UserManager {
 		userList.add(userToAdd);
 		
 	}
+	
+//	Checks the LinkedList of userList to see if the inputed parameters of username and password exist
 	public boolean checkUser(String username,String password) {
 		boolean check = false;
 		for (int i=0;i<userList.size();i++) {
@@ -41,33 +42,47 @@ public class UserManager {
 		}
 		return check;
 	}
-	public static void connect() {  
-        Connection conn = null;  
+	
+	
+//	CODE MODIFIED FROM: https://www.javatpoint.com/java-sqlite
+	
+//	Initialize connection between app and SQlite database containing userInformation
+//	Not needed in main but is needed to establish any sort of connection
+	public static Connection connect() {  
+        // SQLite connection string (Directory to DB location)
+        String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/userInfoSQL.db";  
+        Connection connect = null;  
         try {  
-            // db parameters  
-            String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/userInfoSQL.db";  
-            // create a connection to the database  
-            conn = DriverManager.getConnection(url);  
-               
-            System.out.println("Connection to SQLite has been established.");  
-              
+            connect = DriverManager.getConnection(url);  
         } catch (SQLException e) {  
             System.out.println(e.getMessage());  
-        } finally {  
-            try {  
-                if (conn != null) {  
-                    conn.close();  
-                }  
-            } catch (SQLException ex) {  
-                System.out.println(ex.getMessage());  
-            }  
         }  
-    } 
+        return connect;  
+    }
+    
+//	Gets all of the information from the DB, specifically from the userInfo table
+	public static ResultSet selectAll(){ 
+//		Execution query to be sent to DB
+        String sql = "SELECT * FROM userInfo";  
+//      Return the results to be processed for GUI
+        ResultSet toReturn = null;
+        
+        try {  
+            Connection connect = connect();  
+            Statement stmt  = connect.createStatement();  
+            ResultSet rs    = stmt.executeQuery(sql);  
+            
+            toReturn = rs;
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+        return toReturn;
+    }  
  
     /** 
      * @param args the command line arguments 
      */  
  public static void main(String[] args) {  
-        connect();  
+        selectAll();
   }  
 }
