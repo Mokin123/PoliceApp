@@ -10,13 +10,13 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import model.UserManager;
 
-public class Login {
+public class MainView {
 //	Importing class user as "u"
 	
 
@@ -30,7 +30,7 @@ public class Login {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login window = new Login();
+					MainView window = new MainView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,8 +41,9 @@ public class Login {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public Login() {
+	public MainView() {
 		um = new UserManager();
 		initialize();
 	}
