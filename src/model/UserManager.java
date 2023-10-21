@@ -27,4 +27,15 @@ public class UserManager {
 		userList.add(userToAdd);
 		
 	}
+	public boolean checkUser(String username,String password) {
+		boolean check = false;
+		for (int i=0;i<userList.size();i++) {
+			User user = userList.get(i);
+			if (user.getUsername().equals(username)&&user.checkPassword(password)==true) {
+				check = true;
+			}
+			
+		}
+		return check;
+	}
 }

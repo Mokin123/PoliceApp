@@ -14,13 +14,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import model.UserManager;
 
 public class Login {
 //	Importing class user as "u"
 	
 
 	private JFrame frame;
+	private UserManager um;
 	/**
 	 * Launch the application.
 	 */
@@ -42,6 +43,7 @@ public class Login {
 	 * Create the application.
 	 */
 	public Login() {
+		um = new UserManager();
 		initialize();
 	}
 
@@ -96,9 +98,11 @@ public class Login {
 				System.out.println(un);
 				System.out.println(pw);
 //				System.out.println(u.checkUser(un,pw));
-				cLayout.show(frame.getContentPane(), "name_homePanel");
+				if (um.checkUser(un, pw) == true) {
+					cLayout.show(frame.getContentPane(), "name_homePanel");
 				}
-			});
+			}
+		});
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		btnNewButton.setBounds(17, 479, 245, 43);
 		loginPanel.add(btnNewButton);	
