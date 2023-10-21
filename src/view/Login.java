@@ -15,17 +15,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import model.User;
 
 public class Login {
 //	Importing class user as "u"
-	User u = new User();
-	Home home = new Home();
-	Report ar = new Report();
-	public JFrame frame;
-	private JTextField unText;
-	private JTextField pwText;
+	
 
+	private JFrame frame;
 	/**
 	 * Launch the application.
 	 */
@@ -70,10 +65,11 @@ public class Login {
 		loginPanel.setLayout(null);
 //		Username Labels:
 		JLabel UNLabel = new JLabel("Username :");
+		UNLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
 		UNLabel.setBounds(17, 266, 145, 56);
 		loginPanel.add(UNLabel);
 //		Username textfield:
-		unText = new JTextField();
+		final JTextField unText = new JTextField();
 		unText.setBackground(new Color(128, 128, 128));
 		unText.setBounds(17, 321, 246, 49);
 		unText.setColumns(10);
@@ -83,6 +79,13 @@ public class Login {
 		pwLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
 		pwLabel.setBounds(17, 367, 145, 56);
 		loginPanel.add(pwLabel);
+//		Password Textfield
+		final JTextField pwText = new JTextField();
+		pwText.setColumns(10);
+		pwText.setBackground(Color.GRAY);
+		pwText.setBounds(17, 418, 246, 49);
+		loginPanel.add(pwText);
+		
 //		Login button
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -99,12 +102,6 @@ public class Login {
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		btnNewButton.setBounds(17, 479, 245, 43);
 		loginPanel.add(btnNewButton);	
-//		Password Textfield
-		pwText = new JTextField();
-		pwText.setColumns(10);
-		pwText.setBackground(Color.GRAY);
-		pwText.setBounds(17, 418, 246, 49);
-		loginPanel.add(pwText);
 		
 		
 		
