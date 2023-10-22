@@ -6,6 +6,20 @@ public class AccidentReport {
 	private String accidentNum;
 	private String date;
 	
+	
+	public String getAccidentNum() {
+		return accidentNum;
+	}
+	public void setAccidentNum(String accidentNum) {
+		this.accidentNum = accidentNum;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	public String generateDate() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
 		LocalDateTime now = LocalDateTime.now();  
@@ -22,17 +36,4 @@ public class AccidentReport {
 		date = temp;
 		return temp;
 	}
-	public String getAccidentNum() {
-		return accidentNum;
-	}
-	public void setAccidentNum(String accidentNum) {
-		this.accidentNum = accidentNum;
-	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-	
 }

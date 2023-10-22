@@ -56,8 +56,9 @@ public class Test{
      * @param args the command line arguments 
      */  
  public static void main(String[] args) {  
-	 Test app = new Test();  
-     app.selectAll();   
+	 String temp = "52205";
+	 String temp2 = "AA0001";
+	 System.out.println(temp.compareTo(temp2));
   }  
 
 }
