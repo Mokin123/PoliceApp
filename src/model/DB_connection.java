@@ -12,9 +12,11 @@ public class DB_connection {
 	
 //	Initialize connection between app and SQlite database containing userInformation
 //	Not needed in main but is needed to establish any sort of connection
-	public static Connection connect() {  
+//	"userInfoSQL.db"
+//	"lampost.db"
+	public static Connection connect(String dbName) {  
         // SQLite connection string (Directory to DB location)
-        String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/userInfoSQL.db";  
+        String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/" + dbName;  
         Connection connect = null;  
         try {  
             connect = DriverManager.getConnection(url);  
@@ -25,15 +27,17 @@ public class DB_connection {
     }
     
 //	Gets all of the information from the DB, specifically from the userInfo table
-	public static ResultSet selectAll(){ 
+	public static ResultSet selectAll(String query){ 
 //		Execution query to be sent to DB
-        String sql = "SELECT * FROM userInfo";  
+        String sql = query;  
 //      Return the results to be processed for GUI
         ResultSet toReturn = null;
         
         try {  
-            Connection connect = connect();  
-            Statement stmt = connect.createStatement();  
+//        	Connect to the SQlite DB
+            Connection connect = connect("userInfoSQL.db");  
+            Statement stmt = connect.createStatement(); 
+//          Sends over the query to DB to be executed
             ResultSet rs = stmt.executeQuery(sql);  
             toReturn = rs;
         } catch (SQLException e) {  
@@ -43,6 +47,7 @@ public class DB_connection {
     }  
 	
 	public static void main (String[] args) {
-		selectAll();
+//		selectAll();
+//		"SELECT * FROM userInfo"
 	}
 }

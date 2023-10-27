@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class AccidentReport {
 	private String accidentNum;
 	private String date;
-	
+	private DB_connection db;
 	
 	public String getAccidentNum() {
 		return accidentNum;
@@ -36,4 +36,9 @@ public class AccidentReport {
 		date = temp;
 		return temp;
 	}
+	
+//	public boolean checkLP(String lpNum) {
+//		boolean state = false;
+//		
+//	}
 }

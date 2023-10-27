@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author ericmok
- *
- */
-module PoliceApp {
-}

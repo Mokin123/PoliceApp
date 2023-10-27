@@ -21,7 +21,7 @@ public class UserManager {
 	public UserManager() {
 		connect = new DB_connection();
 		userList = new LinkedList<User>();
-		createUserList(DB_connection.selectAll());
+		createUserList(DB_connection.selectAll("SELECT * FROM userInfo"));
 	}
 	
 //	Adds a new user with the username, password and adminStatus parameters

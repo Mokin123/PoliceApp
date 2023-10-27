@@ -19,46 +19,47 @@ public class Test{
 //         rowCount++;
 //    }
 	
-	
-	 private String url;
-	 private Connection connect() {  
-	        // SQLite connection string  
-	        url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/userInfoSQL.db";  
-	        Connection conn = null;  
-	        try {  
-	            conn = DriverManager.getConnection(url);  
-	        } catch (SQLException e) {  
-	            System.out.println(e.getMessage());  
-	        }  
-	        return conn;  
-	    }  
-	 public void selectAll(){  
-	        String sql = "SELECT * FROM userInfo";  
-	          
-	        try {  
-	            Connection conn = this.connect();  
-	            Statement stmt  = conn.createStatement();  
-	            ResultSet rs    = stmt.executeQuery(sql);  
-	              
-	            // loop through the result set  
-	            while (rs.next()) {  
-	                System.out.println(rs.getString("username") +  "\t" +   
-	                                   rs.getString("password") + "\t" +  
-	                                   rs.getBoolean("admin"));  
-	            }  
-	        } catch (SQLException e) {  
-	            System.out.println(e.getMessage());  
-	        }  
-	    }  
 //	
- 
-    /** 
-     * @param args the command line arguments 
-     */  
+//	 private String url;
+//	 private Connection connect() {  
+//	        // SQLite connection string  
+//	        url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/userInfoSQL.db";  
+//	        Connection conn = null;  
+//	        try {  
+//	            conn = DriverManager.getConnection(url);  
+//	        } catch (SQLException e) {  
+//	            System.out.println(e.getMessage());  
+//	        }  
+//	        return conn;  
+//	    }  
+//	 public void selectAll(){  
+//	        String sql = "SELECT * FROM userInfo";  
+//	          
+//	        try {  
+//	            Connection conn = this.connect();  
+//	            Statement stmt  = conn.createStatement();  
+//	            ResultSet rs    = stmt.executeQuery(sql);  
+//	              
+//	            // loop through the result set  
+//	            while (rs.next()) {  
+//	                System.out.println(rs.getString("username") +  "\t" +   
+//	                                   rs.getString("password") + "\t" +  
+//	                                   rs.getBoolean("admin"));  
+//	            }  
+//	        } catch (SQLException e) {  
+//	            System.out.println(e.getMessage());  
+//	        }  
+//	    }  
+////	
+// 
+//    /** 
+//     * @param args the command line arguments 
+//     */  
  public static void main(String[] args) {  
 	 String temp = "52205";
 	 String temp2 = "AA0001";
-	 System.out.println(temp.compareTo(temp2));
-  }  
+//	 System.out.println(temp.compareTo(temp2));
+	 System.out.println(temp+temp2);
+ }  
 
 }

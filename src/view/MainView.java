@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -65,6 +66,7 @@ public class MainView {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setBounds(100, 100, 284, 573);
+		frame.setLocation(570, 150);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final CardLayout cLayout = new CardLayout(0,0);
 		frame.getContentPane().setLayout(cLayout);
@@ -117,6 +119,11 @@ public class MainView {
 //				System.out.println(u.checkUser(un,pw));
 				if (um.checkUser(un, pw) == true) {
 					cLayout.show(frame.getContentPane(), "name_homePanel");
+				}
+				else {
+//					JOptionPane.WARNING_MESSAGE
+					JOptionPane.showMessageDialog(null,"Enter a valid username or password",
+                            "Login Failed", 2);
 				}
 			}
 		});
@@ -189,7 +196,7 @@ public class MainView {
 		reportPanel.add(dateLb);
 		
 		final JTextField dateTx = new JTextField();
-		dateTx.setBounds(53, 66, 156, 26);
+		dateTx.setBounds(53, 66, 174, 26);
 		reportPanel.add(dateTx);
 		dateTx.setColumns(10);
 		dateTx.setText("YYYY/MM/DD");
@@ -200,7 +207,7 @@ public class MainView {
 				dateTx.setText(ar.generateDate());
 			}
 		});
-		dateAuto.setBounds(205, 66, 54, 29);
+		dateAuto.setBounds(224, 66, 54, 29);
 		reportPanel.add(dateAuto);
 		
 		JLabel timeLb = new JLabel("Time :");
@@ -208,7 +215,7 @@ public class MainView {
 		reportPanel.add(timeLb);
 		
 		final JTextField timeTx = new JTextField();
-		timeTx.setBounds(53, 94, 156, 26);
+		timeTx.setBounds(53, 94, 174, 26);
 		reportPanel.add(timeTx);
 		timeTx.setColumns(10);
 		timeTx.setText("HH:mm");
@@ -219,7 +226,7 @@ public class MainView {
 				timeTx.setText(ar.generateTime());
 			}
 		});
-		timeAuto.setBounds(205, 94, 54, 29);
+		timeAuto.setBounds(224, 94, 54, 29);
 		reportPanel.add(timeAuto);
 		
 		JLabel lpLb = new JLabel("Lampost num:");
@@ -227,7 +234,7 @@ public class MainView {
 		reportPanel.add(lpLb);
 		
 		JTextField locTx = new JTextField();
-		locTx.setBounds(103, 122, 156, 26);
+		locTx.setBounds(103, 122, 113, 26);
 		reportPanel.add(locTx);
 		locTx.setColumns(10);
 		locTx.setText("Location...");
@@ -286,6 +293,10 @@ public class MainView {
 		JLabel caseNumLb = new JLabel("Case num:");
 		caseNumLb.setBounds(10, 43, 77, 16);
 		reportPanel.add(caseNumLb);
+		
+		JButton lpNumCheckBt = new JButton("Check");
+		lpNumCheckBt.setBounds(215, 122, 63, 29);
+		reportPanel.add(lpNumCheckBt);
 		
 		
 	
