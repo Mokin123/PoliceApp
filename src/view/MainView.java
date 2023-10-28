@@ -32,6 +32,7 @@ public class MainView {
 	private JFrame frame;
 	private UserManager um;
 	private AccidentReport ar;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -114,11 +115,11 @@ public class MainView {
 //					frame.setVisible(false);
 				String un = unText.getText();
 				String pw = pwText.getText();
-				System.out.println(un);
-				System.out.println(pw);
-//				System.out.println(u.checkUser(un,pw));
+				
 				if (um.checkUser(un, pw) == true) {
-					cLayout.show(frame.getContentPane(), "name_homePanel");
+//					cLayout.show(frame.getContentPane(), "name_homePanel");
+					cLayout.show(frame.getContentPane(), "name_reportPanel");
+
 				}
 				else {
 //					JOptionPane.WARNING_MESSAGE
@@ -233,11 +234,11 @@ public class MainView {
 		lpLb.setBounds(10, 127, 156, 16);
 		reportPanel.add(lpLb);
 		
-		JTextField locTx = new JTextField();
+		final JTextField locTx = new JTextField();
 		locTx.setBounds(103, 122, 113, 26);
 		reportPanel.add(locTx);
 		locTx.setColumns(10);
-		locTx.setText("Location...");
+		locTx.setText("Number here ...");
 		
 //		RADIO buttons
 		ButtonGroup severityGroup = new ButtonGroup();
@@ -295,6 +296,17 @@ public class MainView {
 		reportPanel.add(caseNumLb);
 		
 		JButton lpNumCheckBt = new JButton("Check");
+		lpNumCheckBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String lpNum = locTx.getText();
+				try {
+					ar.checkLP(lpNum);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		lpNumCheckBt.setBounds(215, 122, 63, 29);
 		reportPanel.add(lpNumCheckBt);
 		

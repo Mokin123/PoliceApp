@@ -27,7 +27,7 @@ public class DB_connection {
     }
     
 //	Gets all of the information from the DB, specifically from the userInfo table
-	public static ResultSet selectAll(String query){ 
+	public static ResultSet dbQuery(String query, String dbName){ 
 //		Execution query to be sent to DB
         String sql = query;  
 //      Return the results to be processed for GUI
@@ -35,7 +35,7 @@ public class DB_connection {
         
         try {  
 //        	Connect to the SQlite DB
-            Connection connect = connect("userInfoSQL.db");  
+            Connection connect = connect(dbName);  
             Statement stmt = connect.createStatement(); 
 //          Sends over the query to DB to be executed
             ResultSet rs = stmt.executeQuery(sql);  
