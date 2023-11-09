@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;    
 import java.sql.*;
-public class Test{
+//public class Test{
 //	 public static void main(String[] args) {    
 ////		   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 //		   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
@@ -55,35 +55,106 @@ public class Test{
 //    /** 
 //     * @param args the command line arguments 
 //     */  
-	
-	public static int binarySearch (String[] allLpNum, String target,int low,int high) {
-//		Checks to see if the convergence between the low and high value has exceeded each other.
-//		meaning that the target String is not in the array
-		if (low <= high) {
-			int mid = low + (high - low) / 2;
+//	
+//	public static int binarySearch (String[] allLpNum, String target,int low,int high) {
+////		Checks to see if the convergence between the low and high value has exceeded each other.
+////		meaning that the target String is not in the array
+//		if (low <= high) {
+//			int mid = low + (high - low) / 2;
+//
+////        	target String found and returns the index of it 
+//            if (allLpNum[mid].equals(target)) {
+//                return mid; 
+//            }
+//// 			Target name is in the right half of the array, performs Recursion to continue the binary search\
+//            else if (allLpNum[mid].compareTo(target) < 0) {
+//                return binarySearch(allLpNum, target, mid + 1, high);
+//            } 
+//// 			Target name is in the left half of the array, performs Recursion to continue the binary search 
+//            else {
+//                return binarySearch(allLpNum, target, low, mid - 1);
+//            }
+//        }
+////		target String not in the array
+//        return -1; 
+//    }
+// public static void main(String[] args) {  
+//	 String [] temp = {"A","B","C","D","E","F"};
+//	 String[] temp3 = new String[10];
+//	 temp3[9] = "4";
+//	 int temp2 = binarySearch(temp,"A",0,5);
+//	 System.out.println(temp3[9]);
+// }  
+import java.io.FileInputStream;
+import java.io.IOException;
 
-//        	target String found and returns the index of it 
-            if (allLpNum[mid].equals(target)) {
-                return mid; 
-            }
-// 			Target name is in the right half of the array, performs Recursion to continue the binary search\
-            else if (allLpNum[mid].compareTo(target) < 0) {
-                return binarySearch(allLpNum, target, mid + 1, high);
-            } 
-// 			Target name is in the left half of the array, performs Recursion to continue the binary search 
-            else {
-                return binarySearch(allLpNum, target, low, mid - 1);
-            }
-        }
-//		target String not in the array
-        return -1; 
+//public class Test {
+//    public static void main(String[] args) {
+//        String imagePath = "/Users/johnny/git/PoliceApp/image/HKPF_275.png"; // Replace with the actual path of your image file
+//
+//        try {
+//            byte[] imageBytes = convertImageToByteArray(imagePath);
+//            System.out.println("Image converted to byte array. Size: " + imageBytes.length + " bytes");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private static byte[] convertImageToByteArray(String imagePath) throws IOException {
+//        FileInputStream fis = null;
+//        byte[] imageBytes = null;
+//
+//        try {
+//            fis = new FileInputStream(imagePath);
+//            imageBytes = new byte[fis.available()];
+//            fis.read(imageBytes);
+//        } finally {
+//            if (fis != null) {
+//                fis.close();
+//            }
+//        }
+//
+//        return imageBytes;
+//    }
+//}
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Test extends JFrame {
+ private JScrollPane scroller;
+ private JPanel panel;
+ private int count = 0;
+
+ public Test () {
+  Container cp = getContentPane();
+
+  panel = new JPanel();
+  panel.setLayout(new FlowLayout());
+
+  JButton button = new JButton("Add Label");
+  button.setBounds(0, 0, 40, 39);
+  button.setVisible(true);
+  button.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+      JLabel label = new JLabel("Label " + count++);
+      panel.add(label);
+      scroller.setViewportView(panel);
+      scroller.revalidate();
     }
- public static void main(String[] args) {  
-	 String [] temp = {"A","B","C","D","E","F"};
-	 String[] temp3 = new String[10];
-	 temp3[9] = "4";
-	 int temp2 = binarySearch(temp,"A",0,5);
-	 System.out.println(temp3[9]);
- }  
+  });
 
+  scroller = new JScrollPane(panel);
+  scroller.setBounds(0, 40, 100, 109);
+  scroller.setPreferredSize(new Dimension(200, 200));
+
+  cp.add(button);
+  cp.add(scroller);
+ }
+
+ public static void main(String[] args) {
+  Test frame = new Test();
+  frame.pack();
+  frame.setVisible(true);
+ }
 }

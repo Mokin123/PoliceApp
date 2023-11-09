@@ -1,6 +1,9 @@
 package model;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+
+import javax.swing.JTextArea;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;  
@@ -8,7 +11,15 @@ import java.time.LocalDateTime;
 public class AccidentReport {
 	private String accidentNum;
 	private String date;
-	private DB_connection db;
+	private String time;
+	private String severity;
+	private boolean [] partiesInvolved;
+	private LinkedList<JTextArea> allTextArea;
+	private LinkedList<String> texts;
+	private LinkedList<byte[]> images;
+	private int textSize;
+	private int imageSize;
+	
 	
 	public String getAccidentNum() {
 		return accidentNum;
@@ -22,22 +33,84 @@ public class AccidentReport {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public String getHour() {
+		return time;
+	}
+	public void setHour(String hour) {
+		this.time = hour;
+	}
+	public LinkedList<String> getTexts() {
+		return texts;
+	}
+	public void setTexts(LinkedList<String> texts) {
+		this.texts = texts;
+	}
+	public LinkedList<byte[]> getImages() {
+		return images;
+	}
+	public void setImages(LinkedList<byte[]> images) {
+		this.images = images;
+	}
+	private void addText(String text) {
+		texts.add(text);
+	}
+	private void addImage(byte[]image) {
+		images.add(image);
+	}
+	public boolean [] getPartiesInvolved() {
+		return partiesInvolved;
+	}
+	public void setPartiesInvolved(boolean [] partiesInvolved) {
+		this.partiesInvolved = partiesInvolved;
+	}
+	public int getTextSize() {
+		return textSize;
+	}
+	public void setTextSize(int textSize) {
+		this.textSize = textSize;
+	}
+	public int getImageSize() {
+		return imageSize;
+	}
+	public void setImageSize(int imageSize) {
+		this.imageSize = imageSize;
+	}
+	public void addTextArea (JTextArea textArea) {
+		allTextArea.add(textArea);
+	}
+	public AccidentReport() {
+		this.partiesInvolved = new boolean[]{false,false,false,false,false,false,false,false,false,false};
+		this.texts = new LinkedList<String>();
+		this.images = new LinkedList<byte[]>();
+		this.textSize = 0;
+		this.imageSize = 0;
+	}
+	
+
+	public AccidentReport(String accidentNum,String date,String hour,boolean[] partiesInvolved
+						 ,LinkedList<String> texts, LinkedList<byte[]> images) {
+		this.accidentNum = accidentNum;
+		this.date = date;
+		this.time = hour;
+		this.partiesInvolved = partiesInvolved;
+		this.texts = texts;
+		this.images = images;
+	}
 	
 	public String generateDate() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
 		LocalDateTime now = LocalDateTime.now();  
-		String temp = dtf.format(now);  
-		date = temp;
-		return temp;
+		String dateFormatted = dtf.format(now);  
+		date = dateFormatted;
+		return dateFormatted;
 	}
-	
 
 	public String generateTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");  
 		LocalDateTime now = LocalDateTime.now();  
-		String temp = dtf.format(now);  
-		date = temp;
-		return temp;
+		String hourFormatted = dtf.format(now);  
+		time = hourFormatted;
+		return hourFormatted;
 	}
 	
 //	Uses Recursion to search through allLpNum array to find target String using binary search method
@@ -65,19 +138,6 @@ public class AccidentReport {
         return -1; 
     }
 	
-	public int count (ResultSet rs ) {
-		int count = 0;
-		try {
-			while (rs.next()) {
-				count = count +1;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return count;
-	}
-	
 //	checks if the given lamp post number is in DB, and return the index for easier accessing in the future
 	public int checkLP(String lpNum) throws SQLException {
 		ResultSet rs = DB_connection.dbQuery("select LampPostNumber FROM lpInfo","lampost.db");
@@ -94,4 +154,19 @@ public class AccidentReport {
 		System.out.println(lpNumIndex);
 		return lpNumIndex;
 	}
+	public LinkedList<JTextArea> getAllTextArea() {
+		return allTextArea;
+	}
+	public void setAllTextArea(LinkedList<JTextArea> allTextArea) {
+		this.allTextArea = allTextArea;
+	}
+	public String getSeverity() {
+		return severity;
+	}
+	public void setSeverity(String severity) {
+		this.severity = severity;
+	}
+	
+	
+	
 }
