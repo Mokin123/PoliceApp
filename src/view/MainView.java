@@ -135,6 +135,7 @@ public class MainView{
 				
 				if (um.checkUser(un, pw) == true) {
 					cLayout.show(frame.getContentPane(), "name_homePanel");
+					
 //					cLayout.show(frame.getContentPane(), "name_reportPanel");
 
 				}
@@ -186,8 +187,8 @@ public class MainView{
 		repotBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cLayout.show(frame.getContentPane(), "name_reportPanel");
-				AccidentReport ar = new AccidentReport();
-				arm.addReport(ar);
+				arm.createAccidentReport();
+				System.out.println(arm.getAllReports().size());
 			}
 			});
 		
@@ -258,14 +259,14 @@ public class MainView{
 		timeTx.addFocusListener(new FocusListener() {
 		    public void focusGained(FocusEvent e) {
 		        // Remove the preset text when the text field gains focus
-		        if (dateTx.getText().equals("HH:mm")) {
-		            dateTx.setText("");
+		        if (timeTx.getText().equals("HH:mm")) {
+		        	timeTx.setText("");
 		        }
 		    }
 		    public void focusLost(FocusEvent e) {
 		        // Add back the preset text if the text field loses focus and no input was provided
-		        if (dateTx.getText().isEmpty()) {
-		            dateTx.setText("HH:mm");
+		        if (timeTx.getText().isEmpty()) {
+		        	timeTx.setText("HH:mm");
 		        }
 		    }
 		});
@@ -284,36 +285,37 @@ public class MainView{
 		lpLb.setBounds(10, 131, 156, 16);
 		reportPanel.add(lpLb);
 		
-		final JTextField locTx = new JTextField();
-		locTx.setBounds(102, 126, 120, 26);
-		reportPanel.add(locTx);
-		locTx.setColumns(10);
+		final JTextField lpTx = new JTextField();
+		lpTx.setBounds(102, 126, 120, 26);
+		reportPanel.add(lpTx);
+		lpTx.setColumns(10);
 		
 //		RADIO buttons
-		final ButtonGroup severityGroup = new ButtonGroup();
+		final JRadioButton[] severityGroup = new JRadioButton[4];
 
 		JLabel severityLb = new JLabel("Severity :");
 		severityLb.setBounds(10, 159, 61, 16);
 		reportPanel.add(severityLb);
 
-		JRadioButton fatalRadio = new JRadioButton();
-		fatalRadio.setBounds(68, 154, 28, 23);
-		reportPanel.add(fatalRadio);
-		severityGroup.add(fatalRadio);
+		JRadioButton fatal = new JRadioButton();
+		fatal.setBounds(68, 154, 28, 23);
+		reportPanel.add(fatal);
+		severityGroup[0] = fatal;
 
-		JRadioButton severeRadio = new JRadioButton();
-		severeRadio.setBounds(118, 154, 28, 23);
-		reportPanel.add(severeRadio);
-		severityGroup.add(severeRadio);
-		JRadioButton moderateRadio = new JRadioButton();
-		moderateRadio.setBounds(168, 154, 28, 23);
-		reportPanel.add(moderateRadio);
-		severityGroup.add(moderateRadio);
+		JRadioButton severe = new JRadioButton();
+		severe.setBounds(118, 154, 28, 23);
+		reportPanel.add(severe);
+		severityGroup[1] = severe;
+		
+		JRadioButton moderate = new JRadioButton();
+		moderate.setBounds(168, 154, 28, 23);
+		reportPanel.add(moderate);
+		severityGroup[2] = moderate;
 
-		JRadioButton lightRadio = new JRadioButton();
-		lightRadio.setBounds(218, 154, 28, 23);
-		reportPanel.add(lightRadio);
-		severityGroup.add(lightRadio);
+		JRadioButton light = new JRadioButton();
+		light.setBounds(218, 154, 28, 23);
+		reportPanel.add(light);
+		severityGroup[3] = light;
 
 		JLabel fatalLb = new JLabel("fatal");
 		fatalLb.setBounds(70, 175, 28, 16);
@@ -342,12 +344,12 @@ public class MainView{
 		JButton lpNumCheckBt = new JButton("Check");
 		lpNumCheckBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String lpNum = locTx.getText();
+				String lpNum = lpTx.getText();
 				try {
 					AccidentReport ar = arm.getRecent();
 					int rowNum = ar.checkLP(lpNum);
 					if (rowNum != -1) {
-				        locTx.setBackground(Color.GREEN);
+				        lpTx.setBackground(Color.GREEN);
 				        
 //		CODE FROM: https://www.geeksforgeeks.org/java-util-timer-class-java/
 //				        returns color of text box to white after 3 seconds
@@ -355,23 +357,24 @@ public class MainView{
 				        timer.schedule(new TimerTask() {
 				            public void run() {
 				                // Remove the background color
-				                locTx.setBackground(Color.WHITE);
+				                lpTx.setBackground(Color.WHITE);
 				            }
 				        }, 1800);
 					}
 					else {
-				        locTx.setBackground(Color.RED);
+				        lpTx.setBackground(Color.RED);
 				        Timer timer = new Timer();
 				        timer.schedule(new TimerTask() {
 				            public void run() {
 				                // Remove the background color
-				                locTx.setBackground(Color.WHITE);
+				                lpTx.setBackground(Color.WHITE);
 				            }
-				        }, null);
+				        }, 1800);
 
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
+					System.out.println("Something wrong");
 					e1.printStackTrace();
 				}
 			}
@@ -385,7 +388,7 @@ public class MainView{
 		reportPanel.add(caseNumTx);
 		
 //		Check Box
-		LinkedList<JCheckBox> partiesGroup = new LinkedList<JCheckBox>();
+		final JCheckBox[] partiesGroup = new JCheckBox[10];
 		
 		JLabel partiesLb = new JLabel("Type of parties involved :");
 		partiesLb.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
@@ -396,63 +399,62 @@ public class MainView{
 		pedestrianCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		pedestrianCB.setBounds(18, 210, 128, 23);
 		reportPanel.add(pedestrianCB);
-		partiesGroup.add(pedestrianCB);
+		partiesGroup[0] = pedestrianCB;
 		
 		JCheckBox cyclistCB = new JCheckBox("Cyclist");
 		cyclistCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		cyclistCB.setBounds(18, 232, 128, 23);
 		reportPanel.add(cyclistCB);
-		partiesGroup.add(cyclistCB);
-
+		partiesGroup[1] = cyclistCB;
 		
 		JCheckBox motorCycleCB = new JCheckBox("Motor Cycle");
 		motorCycleCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		motorCycleCB.setBounds(18, 301, 128, 23);
 		reportPanel.add(motorCycleCB);
-		partiesGroup.add(motorCycleCB);
+		partiesGroup[2] = motorCycleCB;
 		
 		JCheckBox privateCarCB = new JCheckBox("Private Car");
 		privateCarCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		privateCarCB.setBounds(128, 210, 128, 23);
 		reportPanel.add(privateCarCB);
-		partiesGroup.add(privateCarCB);
+		partiesGroup[3] = privateCarCB;
 		
 		JCheckBox taxiCB = new JCheckBox("Taxi");
 		taxiCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		taxiCB.setBounds(128, 232, 128, 23);
 		reportPanel.add(taxiCB);
-		partiesGroup.add(taxiCB);
+		partiesGroup[4] = taxiCB;
 		
 		JCheckBox lgvCB = new JCheckBox("Light Goods Vehicle");
 		lgvCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		lgvCB.setBounds(128, 255, 156, 23);
 		reportPanel.add(lgvCB);
-		partiesGroup.add(lgvCB);
+		partiesGroup[5] = lgvCB;
 		
 		JCheckBox hgvCB = new JCheckBox("Heavy Goods Vehicle");
 		hgvCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		hgvCB.setBounds(128, 278, 156, 23);
 		reportPanel.add(hgvCB);
-		partiesGroup.add(hgvCB);
-		
+		partiesGroup[6] = hgvCB;
+	
 		JCheckBox publicBusCB = new JCheckBox("Public Bus");
 		publicBusCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		publicBusCB.setBounds(18, 255, 156, 23);
 		reportPanel.add(publicBusCB);
-		partiesGroup.add(publicBusCB);
+		partiesGroup[7] = publicBusCB;
 		
 		JCheckBox privateBusCB = new JCheckBox("Private Bus");
 		privateBusCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		privateBusCB.setBounds(18, 278, 156, 23);
 		reportPanel.add(privateBusCB);
-		partiesGroup.add(privateBusCB);
+		partiesGroup[8] = privateBusCB;
 		
 		JCheckBox propertyCB = new JCheckBox("Gov. /Private Property");
 		propertyCB.setHorizontalAlignment(SwingConstants.LEFT);
 		propertyCB.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		propertyCB.setBounds(128, 300, 150, 23);
 		reportPanel.add(propertyCB);
-		partiesGroup.add(propertyCB);
+		partiesGroup[9] = propertyCB;
 		
 		
 //      RESOURCE USED: https://www.javatpoint.com/java-jscrollpane
@@ -528,12 +530,23 @@ public class MainView{
         
         uploadBt.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+				AccidentReport ar = arm.getRecent();
 				String aN = caseNumTx.getText();
 				String date = dateTx.getText();
 				String hour = timeTx.getText();
-				JRadioButton bSelected = (JRadioButton) severityGroup.getSelection();
-				String severity = bSelected.getText();
-				
+				String lp = lpTx.getText();
+				boolean check = ar.checkEssential(aN, date, hour, severityGroup, lp);
+				if (check == true) {
+					ar.setAccidentNum(aN);
+					ar.setDate(date);
+					ar.setTime(hour);
+//					ar.setSeverity(bSelected.getText());
+					ar.setLampPost(lp);
+					boolean[] returnedConversion = ar.convertPartiesInvolved(partiesGroup);
+					ar.setPartiesInvolved(returnedConversion);
+					ar.setTexts();
+					ar.updateInfo(aN,date,hour,lp,severityGroup,returnedConversion);
+				}
 				
         	}
         });

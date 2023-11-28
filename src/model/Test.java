@@ -1,5 +1,6 @@
 package model;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -88,8 +89,8 @@ import java.sql.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-//public class Test {
-//    public static void main(String[] args) {
+public class Test {
+    public static void main(String[] args) {
 //        String imagePath = "/Users/johnny/git/PoliceApp/image/HKPF_275.png"; // Replace with the actual path of your image file
 //
 //        try {
@@ -115,46 +116,27 @@ import java.io.IOException;
 //        }
 //
 //        return imageBytes;
-//    }
-//}
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-public class Test extends JFrame {
- private JScrollPane scroller;
- private JPanel panel;
- private int count = 0;
-
- public Test () {
-  Container cp = getContentPane();
-
-  panel = new JPanel();
-  panel.setLayout(new FlowLayout());
-
-  JButton button = new JButton("Add Label");
-  button.setBounds(0, 0, 40, 39);
-  button.setVisible(true);
-  button.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      JLabel label = new JLabel("Label " + count++);
-      panel.add(label);
-      scroller.setViewportView(panel);
-      scroller.revalidate();
+    	
+    	LinkedList<String> temp = new LinkedList<String>();
+    	temp.add("hello");
+    	System.out.println(temp.size());
+    	System.out.println(temp.get(0));
+    	public int binarySearch (LinkedList<String> allLpNum, String target,int low,int high) {
+//    		
+    		if (low <= high) {
+    			int mid = low + (high - low) / 2;
+    			String middleString = allLpNum.get(mid);
+                if (middleString.equals(target)) {
+                    return mid+1; 
+                }
+                else if (middleString.compareTo(target) < 0) {
+                    return binarySearch(allLpNum, target, mid + 1, high);
+                } 
+                else {
+                    return binarySearch(allLpNum, target, low, mid - 1);
+                }
+            }
+            return -1; 
+        }
     }
-  });
-
-  scroller = new JScrollPane(panel);
-  scroller.setBounds(0, 40, 100, 109);
-  scroller.setPreferredSize(new Dimension(200, 200));
-
-  cp.add(button);
-  cp.add(scroller);
- }
-
- public static void main(String[] args) {
-  Test frame = new Test();
-  frame.pack();
-  frame.setVisible(true);
- }
 }

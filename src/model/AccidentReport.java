@@ -1,7 +1,11 @@
 package model;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.LinkedList;
 
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 import java.sql.ResultSet;
@@ -12,7 +16,10 @@ public class AccidentReport {
 	private String accidentNum;
 	private String date;
 	private String time;
-	private String severity;
+	private String lampPost;
+	private long lat;
+	private long lon;
+	private int severity;
 	private boolean [] partiesInvolved;
 	private LinkedList<JTextArea> allTextArea;
 	private LinkedList<String> texts;
@@ -33,16 +40,16 @@ public class AccidentReport {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public String getHour() {
+	public String getTime() {
 		return time;
 	}
-	public void setHour(String hour) {
+	public void setTime(String hour) {
 		this.time = hour;
 	}
 	public LinkedList<String> getTexts() {
 		return texts;
 	}
-	public void setTexts(LinkedList<String> texts) {
+	public void setTexts() {
 		this.texts = texts;
 	}
 	public LinkedList<byte[]> getImages() {
@@ -76,10 +83,30 @@ public class AccidentReport {
 		this.imageSize = imageSize;
 	}
 	public void addTextArea (JTextArea textArea) {
-		allTextArea.add(textArea);
+		this.allTextArea.add(textArea);
 	}
+	public LinkedList<JTextArea> getAllTextArea() {
+		return allTextArea;
+	}
+	public void setAllTextArea(LinkedList<JTextArea> allTextArea) {
+		this.allTextArea = allTextArea;
+	}
+	public String getSeverity() {
+		return severity;
+	}
+	public void setSeverity(String severity) {
+		this.severity = severity;
+	}
+	public String getLampPost() {
+		return lampPost;
+	}
+	public void setLampPost(String lampPost) {
+		this.lampPost = lampPost;
+	}
+	
 	public AccidentReport() {
 		this.partiesInvolved = new boolean[]{false,false,false,false,false,false,false,false,false,false};
+		this.allTextArea = new LinkedList<JTextArea>();
 		this.texts = new LinkedList<String>();
 		this.images = new LinkedList<byte[]>();
 		this.textSize = 0;
@@ -122,11 +149,11 @@ public class AccidentReport {
 			String middleString = allLpNum.get(mid);
 
 //        	target String found and returns the index of it 
-            if (middleString.equals(target)) {
+            if (middleString.equalsIgnoreCase(target)) {
                 return mid+1; 
             }
 // 			Target name is in the right half of the array, performs Recursion to continue the binary search\
-            else if (middleString.compareTo(target) < 0) {
+            else if (middleString.compareToIgnoreCase(target) < 0) {
                 return binarySearch(allLpNum, target, mid + 1, high);
             } 
 // 			Target name is in the left half of the array, performs Recursion to continue the binary search 
@@ -154,18 +181,119 @@ public class AccidentReport {
 		System.out.println(lpNumIndex);
 		return lpNumIndex;
 	}
-	public LinkedList<JTextArea> getAllTextArea() {
-		return allTextArea;
+	public boolean checkEssential(String aN, String date,String hour,  JRadioButton[] severityGroup, String lp) {
+		boolean check = true;
+		boolean severityCheck = false;
+		for (int i=0; i<severityGroup.length;i++) {
+			if (severityCheck == false) {
+				severityCheck = severityGroup[i].isSelected();
+			}
+		}
+		if (aN.equals("")) {
+			JOptionPane.showMessageDialog(null,"Enter a Accident Number",
+                    "Upload Failed", 2);
+			check = false;
+		}
+		if (date.equals("YYYY/MM/DD")) {
+			JOptionPane.showMessageDialog(null,"Enter a Date",
+                    "Upoad Failed", 2);
+			check = false;
+		}
+		if (hour.equals("HH:mm")) {
+			JOptionPane.showMessageDialog(null,"Enter a Time",
+                    "Upoad Failed", 2);
+			check = false;
+		}
+		if (severityCheck == false) {
+			JOptionPane.showMessageDialog(null,"Select a severity",
+                    "Upoad Failed", 2);
+			check = false;
+		}
+		try {
+			if (checkLP(lp)== -1) {
+				JOptionPane.showMessageDialog(null,"Enter a Lamp Post Number",
+	                    "Upoad Failed", 2);	
+				check = false;
+						}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return check;
 	}
-	public void setAllTextArea(LinkedList<JTextArea> allTextArea) {
-		this.allTextArea = allTextArea;
+	
+	public boolean[] convertPartiesInvolved(JCheckBox[] parties) {
+		boolean[] checkBox = new boolean[10];
+//		Fill array with all fase
+		Arrays.fill(checkBox,false);
+		for (int i=0; i<parties.length;i++) {
+			if (parties[i].isSelected() == true) {
+				checkBox[i] = true;
+			}
+		}
+		return checkBox;
 	}
-	public String getSeverity() {
-		return severity;
+	public long searchLatLon(int lpIndex,int type) {
+		if (type == 1) {
+			long lati =  0;
+			ResultSet rs = DB_connection.dbQuery("select Latitude FROM lpInfo WHERE rowid = "+ Integer.toBinaryString(lpIndex),"lampost.db");
+			try {
+				lati =  Long.parseLong(rs.getString("Latitude"));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(lati);
+			return lati;
+		}
+		else {
+			long longi =  0;
+			ResultSet rs = DB_connection.dbQuery("select Longitude FROM lpInfo WHERE rowid = "+ Integer.toBinaryString(lpIndex),"lampost.db");
+			try {
+				longi =  Long.parseLong(rs.getString("Latitude"));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(longi);
+			return longi;
+		}
 	}
-	public void setSeverity(String severity) {
-		this.severity = severity;
+	
+	public int findSeverity(JRadioButton[] severityGroup) {
+		int toReturn = 0;
+		for (int i=0; i<severityGroup.length;i++) {
+			JRadioButton temp = severityGroup[i];
+			if (temp.isSelected()) {
+				toReturn = i;
+			}	
+		}
+		return toReturn;
 	}
+	
+	public void updateInfo (String aN, String date, String hour, String lp,JRadioButton[] severityGroup,boolean[] returnedConversion) {
+		this.accidentNum = aN;
+		this.date = date;
+		this.time = hour;
+		this.lampPost = lp;
+		int lpIndex = 0;
+		try {
+			lpIndex = checkLP(lp);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.lat = searchLatLon(lpIndex,1);
+		this.lon = searchLatLon(lpIndex,0);
+		severity = findSeverity(severityGroup);
+		
+	}
+	
 	
 	
 	

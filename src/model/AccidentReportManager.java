@@ -23,6 +23,10 @@ public class AccidentReportManager {
 		int size = allReports.size();
 		return allReports.get(size-1);
 	}
+	public void createAccidentReport() {
+		AccidentReport ar = new AccidentReport();
+		allReports.add(ar);
+	}
 	
 	public AccidentReportManager() {
 		allReports = new LinkedList<AccidentReport>();
