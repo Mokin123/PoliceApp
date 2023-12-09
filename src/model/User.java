@@ -3,12 +3,10 @@ public class User{
 	
 	private String username;
 	private String password;
-	private boolean admin;
 	
-	public User(String username, String password, boolean admin) {
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.admin = admin;
 	}
 	public boolean checkPassword(String passToCheck) {
 		boolean check = false;
@@ -23,15 +21,12 @@ public class User{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public boolean getAdmin () {
-		return admin;
-	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
 	
+	public boolean getAdmin() {
+		return false;
+	}
 	
 }

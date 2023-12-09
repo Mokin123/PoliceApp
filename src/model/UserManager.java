@@ -26,11 +26,21 @@ public class UserManager {
 	}
 	
 //	Adds a new user with the username, password and adminStatus parameters
-	public void addNewUser(String userName, String password, boolean adminStatus) {
-		//Creating the user
-		User userToAdd = new User(userName, password, adminStatus);
-		//Add to the linked list
-		userList.add(userToAdd);
+	public void addNewUser(String userName, String password,boolean admin) {
+		if (admin == false) {
+			//Creating the user
+			User userToAdd = new User(userName, password);
+			//Add to the linked list
+			userList.add(userToAdd);
+			
+		}
+		else {
+			Admin userToAdd = new Admin(userName,password);
+			//Add to the linked list
+			userList.add(userToAdd);
+			
+		}
+		
 		
 	}
 	

@@ -3,6 +3,7 @@ package model;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,8 +47,17 @@ public class DB_connection {
         return toReturn;
     }  
 	
-	public static void main (String[] args) {
-//		selectAll();
-//		"SELECT * FROM userInfo"
-	}
+	public static void updateDatabase(String url, String execute) {
+        try (Connection connection = DriverManager.getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(execute)) {
+
+            // Execute the query
+            preparedStatement.executeUpdate();
+
+            
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }

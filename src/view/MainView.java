@@ -492,7 +492,7 @@ public class MainView{
 				
 				scrollPanel.add(Box.createVerticalStrut(5));
 				AccidentReport ar = arm.getRecent();
-				JLabel label = new JLabel("Label " + (ar.getTextSize()+1));
+				JLabel label = new JLabel("Text Area " + (ar.getTextSize()+1));
 			    scrollPanel.add(label);
 				scrollPanel.add(Box.createVerticalStrut(10));
 				final JTextArea textArea = new JTextArea("Insert Text Here");
@@ -537,15 +537,9 @@ public class MainView{
 				String lp = lpTx.getText();
 				boolean check = ar.checkEssential(aN, date, hour, severityGroup, lp);
 				if (check == true) {
-					ar.setAccidentNum(aN);
-					ar.setDate(date);
-					ar.setTime(hour);
-//					ar.setSeverity(bSelected.getText());
-					ar.setLampPost(lp);
-					boolean[] returnedConversion = ar.convertPartiesInvolved(partiesGroup);
-					ar.setPartiesInvolved(returnedConversion);
-					ar.setTexts();
-					ar.updateInfo(aN,date,hour,lp,severityGroup,returnedConversion);
+					int[] returnedConversion = ar.convertPartiesInvolved(partiesGroup);
+					ar.updateInfo(aN, date, hour, lp, severityGroup, returnedConversion);
+					ar.uploadInfo();
 				}
 				
         	}
