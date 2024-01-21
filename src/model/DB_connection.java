@@ -15,25 +15,27 @@ public class DB_connection {
 //	Not needed in main but is needed to establish any sort of connection
 //	"userInfoSQL.db"
 //	"lampost.db"
+	
 	public static Connection connect(String dbName) {  
         // SQLite connection string (Directory to DB location)
         String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/" + dbName;  
         Connection connect = null;  
         try {  
             connect = DriverManager.getConnection(url);  
-        } catch (SQLException e) {  
-            System.out.println(e.getMessage());  
+        } 
+        
+        catch (SQLException e) {  
+            System.out.println(e.getMessage());
+            System.out.println("error");
         }  
         return connect;  
     }
     
-//	Gets all of the information from the DB, specifically from the userInfo table
 	public static ResultSet dbQuery(String query, String dbName){ 
 //		Execution query to be sent to DB
         String sql = query;  
 //      Return the results to be processed for GUI
         ResultSet toReturn = null;
-        
         try {  
 //        	Connect to the SQlite DB
             Connection connect = connect(dbName);  
@@ -47,17 +49,39 @@ public class DB_connection {
         return toReturn;
     }  
 	
-	public static void updateDatabase(String url, String execute) {
-        try (Connection connection = DriverManager.getConnection(url);
-             PreparedStatement preparedStatement = connection.prepareStatement(execute)) {
-
-            // Execute the query
-            preparedStatement.executeUpdate();
-
-            
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+	public void addDatabase(Connection connection, PreparedStatement ps) {
+        try {
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
+	public void addDatabase (String url, String execute) {
+//		Connect to database
+		try (Connection connection = DriverManager.getConnection(url);
+//			create statement to be sent to databse
+			PreparedStatement statement = connection.prepareStatement(execute)) {
+//			executes the statement
+			statement.executeUpdate();
+		}catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	public void removeUserDatabase (String url, String execute,String username, String password) {
+//		Connect to database
+		try (Connection connection = DriverManager.getConnection(url);
+//			create statement to be sent to databse
+			PreparedStatement statement = connection.prepareStatement(execute)) {
+//			sets values within the statement that was left as "?" in the String execute
+			statement.setString(0, username);
+			statement.setString(1, password);
+//			executes the statement
+			statement.executeUpdate();
+		}catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
 }

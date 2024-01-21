@@ -40,7 +40,7 @@ public class AccidentReport {
 	private String allText;
 	private int textSize;
 	private int imageSize;
-	
+	public DB_connection db = new DB_connection();
 	
 	public String getAllText() {
 		return allText;
@@ -146,17 +146,23 @@ public class AccidentReport {
 		LocalDateTime now = LocalDateTime.now();  
 		String hourFormatted = dtf.format(now);  
 		time = hourFormatted;
+		
+		
+		
+		
+		
+		
 		return hourFormatted;
 	}
 	
 //	Uses Recursion to search through allLpNum array to find target String using binary search method
+	
 	public int binarySearch (LinkedList<String> allLpNum, String target,int low,int high) {
 //		Checks to see if the convergence between the low and high value has exceeded each other.
 //		meaning that the target String is not in the array
 		if (low <= high) {
 			int mid = low + (high - low) / 2;
 			String middleString = allLpNum.get(mid);
-
 //        	target String found and returns the index of it 
             if (middleString.equalsIgnoreCase(target)) {
                 return mid+1; 
@@ -176,7 +182,9 @@ public class AccidentReport {
 	
 //	checks if the given lamp post number is in DB, and return the index for easier accessing in the future
 	public int checkLP(String lpNum) throws SQLException {
+		
 		ResultSet rs = DB_connection.dbQuery("select LampPostNumber FROM lpInfo","lampost.db");
+		
 		LinkedList<String> allLpNum = new LinkedList<String>();
 		
 //     loops through the ResultSet and transfers data into array 
@@ -187,7 +195,7 @@ public class AccidentReport {
 	   	int high = allLpNum.size();
 //		stores the result of the binary search (index of where lpNum is)
 		int lpNumIndex = binarySearch(allLpNum, lpNum, 0, high);
-		System.out.println(lpNumIndex);
+//		System.out.println(lpNumIndex);
 		return lpNumIndex;
 	}
 	public boolean checkEssential(String aN, String date,String hour,  JRadioButton[] severityGroup, String lp) {
@@ -310,7 +318,7 @@ public class AccidentReport {
 		this.properties = returnedConversion[9];
 		for (int i=0; i< allTextArea.size();i++) {
 			JTextArea temp = allTextArea.get(i);
-			System.out.println(temp.getText());
+//			System.out.println(temp.getText());
 			this.allText = this.allText + temp.getText() + "||||||||||";
 			
 		}
@@ -319,34 +327,33 @@ public class AccidentReport {
 	public void uploadInfo() {
 		String url = "jdbc:sqlite:/Users/johnny/git/PoliceApp/src/model/accidentReport.db";
 		String execute = "INSERT INTO accidentReport (accidentNum,date,time,lampPost,lat,lon,severity,pedestrian,cyclist,publicBus,privateBus,motorCycle,privateCar,taxi,lgv,hgv,properties,text)"
-			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		 try (Connection connection = DriverManager.getConnection(url);
-			 PreparedStatement statement = connection.prepareStatement(execute)) {
-			 statement.setString(1, accidentNum);
-			 statement.setString(2, date);
-			 statement.setString(3, time);
-			 statement.setString(4, lampPost);
-			 statement.setDouble(5, lat);
-			 statement.setDouble(6, lon);
-			 statement.setInt(7, severity);
-			 statement.setInt(8, pedestrian);
-			 statement.setInt(9, cyclist);
-			 statement.setInt(10, publicBus);
-			 statement.setInt(11, privateBus);
-			 statement.setInt(12, motorCycle);
-			 statement.setInt(13, privateCar);
-			 statement.setInt(14, taxi);
-			 statement.setInt(15, lgv);
-			 statement.setInt(16, hgv);
-			 statement.setInt(17, properties);
-			 statement.setString(18, allText);
-	         statement.executeUpdate();
-		}catch (SQLException e) {
-	            System.out.println("Error: " + e.getMessage());
-	    }
+				+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			 try (Connection connection = DriverManager.getConnection(url);
+				 PreparedStatement statement = connection.prepareStatement(execute)) {
+				 statement.setString(1, accidentNum);
+				 statement.setString(2, date);
+				 statement.setString(3, time);
+				 statement.setString(4, lampPost);
+				 statement.setDouble(5, lat);
+				 statement.setDouble(6, lon);
+				 statement.setInt(7, severity);
+				 statement.setInt(8, pedestrian);
+				 statement.setInt(9, cyclist);
+				 statement.setInt(10, publicBus);
+				 statement.setInt(11, privateBus);
+				 statement.setInt(12, motorCycle);
+				 statement.setInt(13, privateCar);
+				 statement.setInt(14, taxi);
+				 statement.setInt(15, lgv);
+				 statement.setInt(16, hgv);
+				 statement.setInt(17, properties);
+				 statement.setString(18, allText);
+		         db.addDatabase(connection, statement);
+			}catch (SQLException e) {
+		            System.out.println("Error: " + e.getMessage());
+		    }
+	
+	
+	
 	}
-	
-	
-	
-	
 }

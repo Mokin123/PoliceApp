@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.util.TimerTask;
 import model.AccidentReport;
 import model.UserManager;
+import model.User;
+import model.Admin;
 import model.AccidentReportManager;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -40,15 +42,21 @@ import java.awt.Label;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import java.awt.ScrollPane;
+import java.awt.event.FocusAdapter;
+import javax.swing.JToolBar;
+import java.awt.SystemColor;
 
 public class MainView{
-//	Importing class user as "u"
+
 	
 
 	private JFrame frame;
 	private UserManager um;
 //	private AccidentReport ar;
 	private AccidentReportManager arm;
+	private JTextField dateFromTx;
+	private JTextField dateToTx;
+
 	/**
 	 * Launch the application.
 	 */
@@ -74,6 +82,7 @@ public class MainView{
 		arm = new AccidentReportManager();
 //		ar = new AccidentReport();
 		um = new UserManager();
+		um.createUserList();
 		initialize();
 	}
 
@@ -88,6 +97,10 @@ public class MainView{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final CardLayout cLayout = new CardLayout(0,0);
 		frame.getContentPane().setLayout(cLayout);
+		ImageIcon img = new ImageIcon(this.getClass().getResource("/HKPF_275.png"));
+		
+//		homePanel ---- 
+		final JPanel homePanel = new JPanel();
 		
 
 //		loginPanel ---- 
@@ -96,83 +109,108 @@ public class MainView{
 		loginPanel.setBounds(0, 0, 284, 573);
 		frame.getContentPane().add(loginPanel,"name_loginPanel");
 		loginPanel.setLayout(null);
-//		Username Labels:
-		JLabel UNLabel = new JLabel("Username :");
-		UNLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
-		UNLabel.setBounds(17, 266, 145, 56);
-		loginPanel.add(UNLabel);
-//		Username textfield:
-		final JTextField unText = new JTextField();
-		unText.setBackground(new Color(128, 128, 128));
-		unText.setBounds(17, 321, 246, 49);
-		unText.setColumns(10);
-		loginPanel.add(unText);
-//		Password Label:
-		JLabel pwLabel = new JLabel("password :");
-		pwLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
-		pwLabel.setBounds(17, 367, 145, 56);
-		loginPanel.add(pwLabel);
-//		Password Textfield
-		final JTextField pwText = new JTextField();
-		pwText.setColumns(10);
-		pwText.setBackground(Color.GRAY);
-		pwText.setBounds(17, 418, 246, 49);
-		loginPanel.add(pwText);
 		
-		JLabel loginLogoimg = new JLabel("");
-		ImageIcon img = new ImageIcon(this.getClass().getResource("/HKPF_275.png"));
-		loginLogoimg.setIcon(img);
-		loginLogoimg.setBounds(20, 5, 244, 275);
-		loginPanel.add(loginLogoimg);
 		
-//		Login button
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//					frame.setVisible(false);
-				String un = unText.getText();
-				String pw = pwText.getText();
-				
-				if (um.checkUser(un, pw) == true) {
-					cLayout.show(frame.getContentPane(), "name_homePanel");
-					
-//					cLayout.show(frame.getContentPane(), "name_reportPanel");
+		
+		final JButton repotBt = new JButton("Report");
+		final JButton reviewBt = new JButton("Review");
+		final JButton clusterBt = new JButton("Cluster");
+		clusterBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cLayout.show(frame.getContentPane(), "name_clusterReviewPanel");
 
-				}
-				else {
-//					JOptionPane.WARNING_MESSAGE
-					JOptionPane.showMessageDialog(null,"Enter a valid username or password",
-                            "Login Failed", 2);
-				}
 			}
 		});
-		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
-		btnNewButton.setBounds(17, 479, 245, 43);
-		loginPanel.add(btnNewButton);	
 		
-		
-		
-//		homePanel ---- 
-		JPanel homePanel = new JPanel();
-		loginPanel.setBounds(0, 0, 284, 573);
+//		
+
+		//		Username Labels:
+				JLabel UNLabel = new JLabel("Username :");
+				UNLabel.setBackground(SystemColor.desktop);
+				UNLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+				UNLabel.setBounds(17, 266, 145, 56);
+				loginPanel.add(UNLabel);
+				//		Username textfield:
+						final JTextField unText = new JTextField();
+						unText.setBackground(new Color(128, 128, 128));
+						unText.setBounds(17, 321, 246, 49);
+						unText.setColumns(10);
+						loginPanel.add(unText);
+						//		Password Label:
+								JLabel pwLabel = new JLabel("password :");
+								pwLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+								pwLabel.setBounds(17, 367, 145, 56);
+								loginPanel.add(pwLabel);
+								//		Password Textfield
+										final JTextField pwText = new JTextField();
+										pwText.setColumns(10);
+										pwText.setBackground(Color.GRAY);
+										pwText.setBounds(17, 418, 246, 49);
+										loginPanel.add(pwText);
+										
+										JLabel loginLogoimg = new JLabel("");
+										loginLogoimg.setIcon(img);
+										loginLogoimg.setBounds(20, 5, 244, 275);
+										loginPanel.add(loginLogoimg);
+										
+//		Login button
+										JButton loginBt = new JButton("Login");
+										loginPanel.setBounds(0, 0, 284, 573);
+										
+										loginBt.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent e) {
+												String un = unText.getText();
+												String pw = pwText.getText();
+//				Check if there is a user with both username and password
+												boolean check = um.checkUser(un, pw);
+												if (check == true) {
+													cLayout.show(frame.getContentPane(), "name_homePanel");
+													final User currUser = um.getCurrUser();
+													if (currUser.getAdmin()==true) {
+														repotBt.setBounds(23, 210, 226, 50);
+														reviewBt.setBounds(23, 280, 226, 50);
+														clusterBt.setBounds(23, 350, 226, 50);
+														final JButton userManagerBt = new JButton("User Manager");
+														userManagerBt.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
+														userManagerBt.setBounds(23, 420, 226, 50);
+														homePanel.add(userManagerBt);
+														userManagerBt.addActionListener(new ActionListener() {
+															public void actionPerformed(ActionEvent e) {
+																cLayout.show(frame.getContentPane(), "name_userManagerPanel");
+//																((Admin)currUser).addUser("mokin2","mokin2",true);
+															}
+															});
+														
+													}
+
+															
+												}
+												else {
+													JOptionPane.showMessageDialog(null,"Enter a valid username or password",
+                            "Login Failed", 2);
+												}
+												
+											}
+										});
+										loginBt.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
+										loginBt.setBounds(17, 479, 245, 43);
+										loginPanel.add(loginBt);	
 		frame.getContentPane().add(homePanel,"name_homePanel");
 		homePanel.setLayout(null);
 			
-//		TEST BUTTON THIS NEEDS WORK ON, IT IS TEMP
-		JButton repotBt = new JButton("Report");
+//		Report, review, cluster button settings
 		repotBt.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		repotBt.setBounds(23, 210, 226, 87);
 		homePanel.add(repotBt);
 		
-		JButton reviewBt = new JButton("Review");
 		reviewBt.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		reviewBt.setBounds(23, 320, 226, 87);
 		homePanel.add(reviewBt);
 		
-		JButton clusterBt = new JButton("Cluster");
 		clusterBt.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		clusterBt.setBounds(23, 430, 226, 87);
 		homePanel.add(clusterBt);
+		
 		
 		JLabel intructionLb = new JLabel("Choose an option :");
 		intructionLb.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
@@ -200,16 +238,20 @@ public class MainView{
 		frame.getContentPane().add(reportPanel,"name_reportPanel");
 		reportPanel.setLayout(null);
 		
-		JLabel reportMenuimg = new JLabel(" ");
 		ImageIcon menuReportimg = new ImageIcon(this.getClass().getResource("/menu.png"));
-		reportMenuimg.setIcon(menuReportimg);
-		reportMenuimg.setBounds(10, 10, 30, 30);
-		reportPanel.add(reportMenuimg);
-
+//		reportMenuimg.setIcon(menuReportimg);
+//		reportMenuimg.setBounds(233, 206, 30, 30);
+//		reportPanel.add(reportMenuimg);
+		
+		JButton reportMenuBt = new JButton("");
+        reportMenuBt.setBounds(6, 5, 40, 40);
+        reportPanel.add(reportMenuBt);	
+        reportMenuBt.setIcon(menuReportimg);
+		
 		
 		JLabel titleLabel = new JLabel("Report Accident");
-		titleLabel.setFont(new Font(titleLabel.getName(), Font.PLAIN, 24));
-		titleLabel.setBounds(45, 5, 192, 46);
+		titleLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+		titleLabel.setBounds(53, 5, 192, 46);
 		reportPanel.add(titleLabel);
 		
 		JLabel dateLb = new JLabel("Date :");
@@ -483,6 +525,8 @@ public class MainView{
         addTxBt.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
         addTxBt.setBounds(0, 323, 142, 39);
         reportPanel.add(addTxBt);
+        
+        
         addTxBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addTxBt.setLocation(0, 467);
@@ -540,13 +584,153 @@ public class MainView{
 					int[] returnedConversion = ar.convertPartiesInvolved(partiesGroup);
 					ar.updateInfo(aN, date, hour, lp, severityGroup, returnedConversion);
 					ar.uploadInfo();
+					cLayout.show(frame.getContentPane(), "name_homePanel");
+
 				}
 				
         	}
         });
-       
         
-//        if (scrollPane.getComponentCount == 0)
+        
+//      User Manager Section
+        final JPanel userManagerPanel = new JPanel();
+        userManagerPanel.setBounds(0, 0, 284, 573);
+		frame.getContentPane().add(userManagerPanel,"name_userManagerPanel");
+		userManagerPanel.setLayout(null);
+		
+		JLabel addNewUserLb = new JLabel("Add New User :");
+		addNewUserLb.setFont(new Font("Dialog", Font.PLAIN, 24));
+		addNewUserLb.setBounds(66, 6, 202, 32);
+		userManagerPanel.add(addNewUserLb);
+		
+		JLabel removeUserLb = new JLabel("Remove User :");
+		removeUserLb.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		removeUserLb.setBounds(6, 266, 202, 32);
+		userManagerPanel.add(removeUserLb);
+		
+		JLabel addUserUsernameLb = new JLabel("UserName:");
+		addUserUsernameLb.setBounds(16, 61, 115, 16);
+		userManagerPanel.add(addUserUsernameLb);
+		
+		final JTextField addUserUsernameTx = new JTextField();
+		addUserUsernameTx.setBounds(91, 56, 187, 26);
+		userManagerPanel.add(addUserUsernameTx);
+		addUserUsernameTx.setColumns(10);
+		
+		JLabel addUserPasswordLb = new JLabel("Password:");
+		addUserPasswordLb.setBounds(16, 111, 82, 16);
+		userManagerPanel.add(addUserPasswordLb);
+		
+		final JTextField addUserPasswordTx = new JTextField();
+		addUserPasswordTx.setBounds(91, 106, 187, 26);
+		userManagerPanel.add(addUserPasswordTx);
+		addUserPasswordTx.setColumns(10);
+		
+		JLabel addUserAdmin = new JLabel("Admin:");
+		addUserAdmin.setBounds(16, 156, 61, 16);
+		userManagerPanel.add(addUserAdmin);
+		
+		final JRadioButton addUserAdminRadio = new JRadioButton("Admin Status");
+		addUserAdminRadio.setBounds(91, 152, 141, 23);
+		userManagerPanel.add(addUserAdminRadio);
+		
+		JLabel removeUserUsernameLb_1 = new JLabel("UserName:");
+		removeUserUsernameLb_1.setBounds(16, 320, 115, 16);
+		userManagerPanel.add(removeUserUsernameLb_1);
+		
+		JButton adminAddUserBt = new JButton("Add");
+		adminAddUserBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				final User currUser = um.getCurrUser();
+				Admin admin = (Admin)currUser;
+				String un = addUserUsernameTx.getText();
+				String pw = addUserPasswordTx.getText();
+				boolean adminCheck = addUserAdminRadio.isSelected();
+				admin.addUser(un,pw,adminCheck);
+//				System.out.println(um.checkUser(un, pw));
+				addUserUsernameTx.setText("");
+				addUserPasswordTx.setText("");
+				addUserAdminRadio.setSelected(false);
+			}
+		});
+		adminAddUserBt.setFont(new Font("Lucida Grande", Font.PLAIN, 27));
+		adminAddUserBt.setBounds(66, 202, 151, 41);
+		userManagerPanel.add(adminAddUserBt);
+		
+		JButton userManagerMenuBt = new JButton("");
+		userManagerMenuBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cLayout.show(frame.getContentPane(), "name_menuPanel");
+
+			}
+		});
+		userManagerMenuBt.setBounds(6, 5, 40, 40);
+        userManagerPanel.add(userManagerMenuBt);	
+        userManagerMenuBt.setIcon(menuReportimg);
+        
+//        Review Cluster Panel
+		final JPanel clusterReviewPanel = new JPanel();
+		clusterReviewPanel.setBounds(0, 0, 284, 573);
+		frame.getContentPane().add(clusterReviewPanel,"name_clusterReviewPanel");
+		clusterReviewPanel.setLayout(null);
+		
+		JButton clusterReviewMenuBt = new JButton("");
+		clusterReviewMenuBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cLayout.show(frame.getContentPane(), "name_menuPanel");
+
+			}
+		});
+		clusterReviewMenuBt.setBounds(6, 5, 40, 40);
+        clusterReviewPanel.add(clusterReviewMenuBt);	
+        clusterReviewMenuBt.setIcon(menuReportimg);
+        
+		JLabel dateFilterLb = new JLabel("Filter Date :");
+		dateFilterLb.setFont(new Font("Dialog", Font.PLAIN, 24));
+		dateFilterLb.setBounds(58, 8, 172, 26);
+		clusterReviewPanel.add(dateFilterLb);
+		
+		JLabel dateFromLb = new JLabel("From :");
+		dateFromLb.setBounds(58, 45, 61, 16);
+		clusterReviewPanel.add(dateFromLb);
+		
+		JLabel dateToLb = new JLabel("To :");
+		dateToLb.setBounds(58, 73, 61, 16);
+		clusterReviewPanel.add(dateToLb);
+		
+		dateFromTx = new JTextField();
+		dateFromTx.setBounds(100, 40, 130, 26);
+		clusterReviewPanel.add(dateFromTx);
+		dateFromTx.setColumns(10);
+		dateFromTx.setText("YYYY/MM/DD");
+		
+		dateToTx = new JTextField();
+		dateToTx.setColumns(10);
+		dateToTx.setBounds(100, 68, 130, 26);
+		clusterReviewPanel.add(dateToTx);
+		dateToTx.setText("YYYY/MM/DD");
+		
+		JButton clusterFilterBt = new JButton("Filter");
+		clusterFilterBt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				  
+			}
+		});
+		clusterFilterBt.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		clusterFilterBt.setBounds(45, 101, 195, 26);
+		clusterReviewPanel.add(clusterFilterBt);
+		
+		ImageIcon mapImg = new ImageIcon(this.getClass().getResource("/map.png"));
+		
+		JLabel mapLb = new JLabel("");
+		mapLb.setIcon(mapImg);
+		mapLb.setBounds(6, 139, 272, 400);
+		clusterReviewPanel.add(mapLb);
+
+		
+		
+		
+		
         
         
         

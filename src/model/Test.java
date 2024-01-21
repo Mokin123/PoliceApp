@@ -88,9 +88,18 @@ import java.sql.*;
 // }  
 import java.io.FileInputStream;
 import java.io.IOException;
+import model.UserManager;
+import model.DB_connection;
 
 public class Test {
     public static void main(String[] args) {
+    		if (um.checkUser("test", "test") == true) {
+    			System.out.println(true);
+    		}
+    		else {
+    			System.out.println(false);
+    		}
+    		
 //        String imagePath = "/Users/johnny/git/PoliceApp/image/HKPF_275.png"; // Replace with the actual path of your image file
 //
 //        try {
@@ -117,26 +126,26 @@ public class Test {
 //
 //        return imageBytes;
     	
-    	LinkedList<String> temp = new LinkedList<String>();
-    	temp.add("hello");
-    	System.out.println(temp.size());
-    	System.out.println(temp.get(0));
-    	public int binarySearch (LinkedList<String> allLpNum, String target,int low,int high) {
-//    		
-    		if (low <= high) {
-    			int mid = low + (high - low) / 2;
-    			String middleString = allLpNum.get(mid);
-                if (middleString.equals(target)) {
-                    return mid+1; 
-                }
-                else if (middleString.compareTo(target) < 0) {
-                    return binarySearch(allLpNum, target, mid + 1, high);
-                } 
-                else {
-                    return binarySearch(allLpNum, target, low, mid - 1);
-                }
-            }
-            return -1; 
-        }
+//    	LinkedList<String> temp = new LinkedList<String>();
+//    	temp.add("hello");
+//    	System.out.println(temp.size());
+//    	System.out.println(temp.get(0));
+//    	public int binarySearch (LinkedList<String> allLpNum, String target,int low,int high) {
+////    		
+//    		if (low <= high) {
+//    			int mid = low + (high - low) / 2;
+//    			String middleString = allLpNum.get(mid);
+//                if (middleString.equals(target)) {
+//                    return mid+1; 
+//                }
+//                else if (middleString.compareTo(target) < 0) {
+//                    return binarySearch(allLpNum, target, mid + 1, high);
+//                } 
+//                else {
+//                    return binarySearch(allLpNum, target, low, mid - 1);
+//                }
+//            }
+//            return -1; 
+//        }
     }
 }
